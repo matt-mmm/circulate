@@ -1,4 +1,4 @@
-# StudentSwap (for Lehigh University)
+# REVOLVE (for Lehigh University)
 
 ## Contributors
 - Matthew Manganillo 25': Project Manager
