@@ -1,2 +1,8 @@
-# studentswap
-Created by Matthew Manganillo 25', Ash Niemann 26', Monty Goldberg 26', Connor Keane 26', and Arik Sen 26'
+# StudentSwap (for Lehigh University)
+
+## Contributors
+- Matthew Manganillo 25': Project Manager
+- Connor Keane 26': Frontend
+- Monty Goldberg 26': Frontend/Backend
+- Arik Sen 26': UI/UX Design
+- Ash Niemann 26': Backend
