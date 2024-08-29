@@ -6,3 +6,6 @@
 - Monty Goldberg 26': Frontend/Backend
 - Arik Sen 26': UI/UX Design
 - Ash Niemann 26': Backend
+
+## Steps
+1. Figma Interface
