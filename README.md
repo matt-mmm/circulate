@@ -1,4 +1,4 @@
-# REVOLVE (for Lehigh University)
+# Circulate (for Lehigh University)
 
 ## Contributors
 - Matthew Manganillo 25': Project Manager
