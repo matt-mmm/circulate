@@ -9,3 +9,4 @@
 
 ## Steps
 1. Figma Interface
+2. React web prototype
