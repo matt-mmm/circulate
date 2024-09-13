@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const Header = () => {
   return (
     <div
@@ -36,7 +37,6 @@ const Header = () => {
               wordWrap: "break-word",
             }}
           >
-            Home
           </div>
           <div
             style={{
