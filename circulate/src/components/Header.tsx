@@ -1,5 +1,5 @@
 import React from "react";
-
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -16,70 +16,82 @@ const Header = () => {
       }}
     >
       {/* Left side logo */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <img
           src="/logo.JPEG" // Correct path from the public folder
           alt="Logo"
-          style={{ height: "100px", marginRight: '1100px' }} // Add margin-right to create space between logo and links
+          style={{ height: "100px", marginRight: "1100px" }} // Add margin-right to create space between logo and links
         />
 
         {/* Right side navigation links */}
         <div style={{ display: "flex", gap: "40px" }}>
-          <div
-            style={{
+        <NavLink
+            to="/Home"
+            style={({ isActive }) => ({
               textAlign: "center",
-              color: "#EBF8FF",
+              color: isActive ? "#FFF" : "#EBF8FF",
               fontSize: 18,
               fontFamily: "Inter",
-              fontWeight: "500",
+              fontWeight: isActive ? "bold" : "500",
               lineHeight: 30,
               letterSpacing: 1.62,
               wordWrap: "break-word",
-            }}
+              textDecoration: "none",
+            })}
           >
-          </div>
-          <div
-            style={{
+            Home
+          </NavLink>
+
+        <NavLink
+            to="/Products"
+            style={({ isActive }) => ({
               textAlign: "center",
-              color: "#EBF8FF",
+              color: isActive ? "#FFF" : "#EBF8FF",
               fontSize: 18,
               fontFamily: "Inter",
-              fontWeight: "500",
+              fontWeight: isActive ? "bold" : "500",
               lineHeight: 30,
               letterSpacing: 1.62,
               wordWrap: "break-word",
-            }}
+              textDecoration: "none",
+            })}
           >
             Products
-          </div>
-          <div
-            style={{
+          </NavLink>
+
+          <NavLink
+            to="/Inbox"
+            style={({ isActive }) => ({
               textAlign: "center",
-              color: "#EBF8FF",
+              color: isActive ? "#FFF" : "#EBF8FF",
               fontSize: 18,
               fontFamily: "Inter",
-              fontWeight: "500",
+              fontWeight: isActive ? "bold" : "500",
               lineHeight: 30,
               letterSpacing: 1.62,
               wordWrap: "break-word",
-            }}
+              textDecoration: "none",
+            })}
           >
             Inbox
-          </div>
-          <div
-            style={{
+          </NavLink>
+
+          <NavLink
+            to="/AboutUs"
+            style={({ isActive }) => ({
               textAlign: "center",
-              color: "#EBF8FF",
+              color: isActive ? "#FFF" : "#EBF8FF",
               fontSize: 18,
               fontFamily: "Inter",
-              fontWeight: "500",
+              fontWeight: isActive ? "bold" : "500",
               lineHeight: 30,
               letterSpacing: 1.62,
               wordWrap: "break-word",
-            }}
+              textDecoration: "none",
+            })}
           >
             About Us
-          </div>
+          </NavLink>
         </div>
       </div>
     </div>

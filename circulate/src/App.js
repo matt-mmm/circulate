@@ -7,16 +7,19 @@ import {
     Route,
 } from "react-router-dom";
 import Home from "./pages/Home.tsx";
-//import About from "./pages/about";
-//import Blogs from "./pages/blogs";
-//import SignUp from "./pages/signup";
-//import Contact from "./pages/contact";
+import AboutUs from "./pages/AboutUs.tsx";
+import Inbox from "./pages/Inbox.tsx";
+import Products from "./pages/Products.tsx";
+
  
 function App() {
     return (
          <Router>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/Home" element={<Home />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path = "/Inbox" element={<Inbox />} />
+            <Route path="/Products" element={<Products />} />
             </Routes>
          </Router>
     );
