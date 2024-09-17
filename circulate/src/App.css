@@ -1,5 +1,24 @@
-
-
+/* Button.css */
+.create-listing-btn {
+    background-color: #8BD0F8; 
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around the button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Increase font size */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+  
+  .create-listing-btn:hover {
+    background-color: #6ac2f6; 
+  }
+  
+  .container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    padding: 20px;
+}
 
 
 

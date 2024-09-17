@@ -11,17 +11,20 @@ import AboutUs from "./pages/AboutUs.tsx";
 import Inbox from "./pages/Inbox.tsx";
 import Products from "./pages/Products.tsx";
 
- 
+
 function App() {
     return (
          <Router>
           <Routes>
-            <Route exact path="/Home" element={<Home />} />
+            <Route exact path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path = "/Inbox" element={<Inbox />} />
             <Route path="/Products" element={<Products />} />
             </Routes>
          </Router>
+            
+         
     );
 }
  
