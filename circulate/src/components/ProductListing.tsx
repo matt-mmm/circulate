@@ -26,6 +26,8 @@ const ProductListing: React.FC<ProductListingProps> = ({ addListing }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    console.log(addListing); // Debug: Check if addListing is passed correctly
+
     // Convert image file to base64 for easy upload
     const toBase64 = (file: File) =>
       new Promise<string | ArrayBuffer | null>((resolve, reject) => {

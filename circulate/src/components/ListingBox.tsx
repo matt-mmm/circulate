@@ -13,6 +13,7 @@ const ListingBox: React.FC = () => {
 
   // Function to add a new listing
   const addListing = (listing: Listing) => {
+    console.log("Adding new listing:", listing); // Debug: Check if this logs correctly
     setListings((prevListings) => [...prevListings, listing]);
   };
 
