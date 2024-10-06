@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ProductListing: React.FC = () => {
@@ -42,7 +43,7 @@ const ProductListing: React.FC = () => {
     if (response.ok) {
       console.log("Form submitted successfully");
       // Clear form fields
-      setTitle("");
+      setTitle(""); 
       setDescription("");
       setImage(null);
     } else {
