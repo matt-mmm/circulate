@@ -6,93 +6,93 @@ const Header = () => {
     <div
       style={{
         width: "100%",
-        height: "100px", // Set a specific height for the header
+        height: "100px",
         background: "#8BD0F8",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-start", // Aligns everything to the left
-        padding: "0 20px", // Padding for space between the content and the edges
+        padding: "0 20px",
       }}
     >
       {/* Left side logo */}
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div style={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
         <img
-          src="/logo.JPEG" // Correct path from the public folder
+          src="/logo.JPEG"
           alt="Logo"
-          style={{ height: "100px", marginRight: "1100px" }} // Add margin-right to create space between logo and links
+          style={{ height: "100px" }}
         />
+      </div>
 
-        {/* Right side navigation links */}
-        <div style={{ display: "flex", gap: "40px" }}>
+      {/* Right side navigation links */}
+      <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
         <NavLink
-            to="/Home"
-            style={({ isActive }) => ({
-              textAlign: "center",
-              color: isActive ? "#FFF" : "#EBF8FF",
-              fontSize: 18,
-              fontFamily: "Inter",
-              fontWeight: isActive ? "bold" : "500",
-              lineHeight: 30,
-              letterSpacing: 1.62,
-              wordWrap: "break-word",
-              textDecoration: "none",
-            })}
-          >
-            Home
-          </NavLink>
+          to="/Home"
+          style={({ isActive }) => ({
+            display: "inline",
+            textAlign: "center",
+            color: isActive ? "#FFF" : "#EBF8FF",
+            fontSize: 18,
+            fontFamily: "Inter",
+            fontWeight: isActive ? "bold" : "500",
+            lineHeight: "30px",
+            letterSpacing: 1.62,
+            textDecoration: "none",
+          })}
+        >
+          Home
+        </NavLink>
+
+        {/* Repeat for other NavLinks */}
+        <NavLink
+          to="/Products"
+          style={({ isActive }) => ({
+            display: "inline",
+            textAlign: "center",
+            color: isActive ? "#FFF" : "#EBF8FF",
+            fontSize: 18,
+            fontFamily: "Inter",
+            fontWeight: isActive ? "bold" : "500",
+            lineHeight: "30px",
+            letterSpacing: 1.62,
+            textDecoration: "none",
+          })}
+        >
+          Products
+        </NavLink>
 
         <NavLink
-            to="/Products"
-            style={({ isActive }) => ({
-              textAlign: "center",
-              color: isActive ? "#FFF" : "#EBF8FF",
-              fontSize: 18,
-              fontFamily: "Inter",
-              fontWeight: isActive ? "bold" : "500",
-              lineHeight: 30,
-              letterSpacing: 1.62,
-              wordWrap: "break-word",
-              textDecoration: "none",
-            })}
-          >
-            Products
-          </NavLink>
+          to="/Inbox"
+          style={({ isActive }) => ({
+            display: "inline",
+            textAlign: "center",
+            color: isActive ? "#FFF" : "#EBF8FF",
+            fontSize: 18,
+            fontFamily: "Inter",
+            fontWeight: isActive ? "bold" : "500",
+            lineHeight: "30px",
+            letterSpacing: 1.62,
+            textDecoration: "none",
+          })}
+        >
+          Inbox
+        </NavLink>
 
-          <NavLink
-            to="/Inbox"
-            style={({ isActive }) => ({
-              textAlign: "center",
-              color: isActive ? "#FFF" : "#EBF8FF",
-              fontSize: 18,
-              fontFamily: "Inter",
-              fontWeight: isActive ? "bold" : "500",
-              lineHeight: 30,
-              letterSpacing: 1.62,
-              wordWrap: "break-word",
-              textDecoration: "none",
-            })}
-          >
-            Inbox
-          </NavLink>
-
-          <NavLink
-            to="/AboutUs"
-            style={({ isActive }) => ({
-              textAlign: "center",
-              color: isActive ? "#FFF" : "#EBF8FF",
-              fontSize: 18,
-              fontFamily: "Inter",
-              fontWeight: isActive ? "bold" : "500",
-              lineHeight: 30,
-              letterSpacing: 1.62,
-              wordWrap: "break-word",
-              textDecoration: "none",
-            })}
-          >
-            About Us
-          </NavLink>
-        </div>
+        <NavLink
+          to="/AboutUs"
+          style={({ isActive }) => ({
+            display: "inline",
+            textAlign: "center",
+            color: isActive ? "#FFF" : "#EBF8FF",
+            fontSize: 18,
+            fontFamily: "Inter",
+            fontWeight: isActive ? "bold" : "500",
+            lineHeight: "30px",
+            letterSpacing: 1.62,
+            textDecoration: "none",
+          })}
+        >
+          About Us
+        </NavLink>
       </div>
     </div>
   );
