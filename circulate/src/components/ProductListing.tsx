@@ -28,7 +28,7 @@ const ProductListing: React.FC = () => {
     const imageData = image ? await toBase64(image) : null;
 
     // Call the API Gateway endpoint
-    const response = await fetch("https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod", {
+    const response = await fetch("https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod/createListing", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
