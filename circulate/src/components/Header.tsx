@@ -61,7 +61,7 @@ const Header = () => {
         </NavLink>
 
         <NavLink
-          to="/Inbox"
+          to="/Account"
           style={({ isActive }) => ({
             display: "inline",
             textAlign: "center",
@@ -74,7 +74,7 @@ const Header = () => {
             textDecoration: "none",
           })}
         >
-          Inbox
+          Account
         </NavLink>
 
         <NavLink

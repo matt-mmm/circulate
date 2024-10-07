@@ -1,0 +1,156 @@
+.account-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F7F7F7;
+}
+
+.main-container {
+  display: flex;
+  width: 100%;
+  height: 832px;
+}
+
+.left-section {
+  position: relative;
+  width: 50%;
+  background-color: #9cd6f8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 75px;
+  min-height: 100%; /* Ensures full height coverage */
+}
+
+.content-layer {
+  margin-top: -100px; /* Adjust margin to align content vertically */
+}
+
+.circle {
+  width: 70px;
+  height: 70px;
+  background-color: #18C0FD;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.main-text h1 {
+  color: white;
+  font-size: 54px;
+  font-weight: 800;
+  max-width: 400px;
+  margin: 20px 0;
+  line-height: 1.1;
+}
+
+.sub-text p {
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  max-width: 360px;
+  line-height: 1.5;
+}
+
+.right-section {
+  width: 50%;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #F7F7F7; /* Ensures consistent background color */
+}
+
+.right-section h2 {
+  color: #171625;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #92929D;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.button-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.google-login-btn, .linkedin-login-btn {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.google-login-btn {
+  background-color: #8BD0F8;
+}
+
+.linkedin-login-btn {
+  background-color: #171625;
+}
+
+.form-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E2E2EA;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Manrope', sans-serif;
+}
+
+.captcha {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.captcha label {
+  color: #92929D;
+  font-size: 15px;
+  font-weight: 500;
+  margin-left: 14px;
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  background-color: #8BD0F8;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.toggle-form {
+  margin-top: 15px;
+  color: #92929D;
+  font-size: 14px;
+}
+
+.toggle-form span {
+  color: #8BD0F8;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 5px;
+}
