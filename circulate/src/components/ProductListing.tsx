@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Product {
-  id: string;
+  listingId: string;
   title: string;
   description: string;
-  imageData: string; // Base64 image data
+  imageUrl: string; // URL of the image
 }
 
 const ProductListing: React.FC = () => {
@@ -185,11 +185,11 @@ const ProductListing: React.FC = () => {
       {/* Render the list of products */}
       <div className="row mt-5">
         {products.map((product) => (
-          <div className="col-md-4" key={product.id}>
+          <div className="col-md-4" key={product.listingId}>
             <div className="card mb-4">
-              {product.imageData && (
+              {product.imageUrl && (
                 <img
-                  src={product.imageData}
+                  src={product.imageUrl}
                   className="card-img-top"
                   alt={product.title}
                 />
