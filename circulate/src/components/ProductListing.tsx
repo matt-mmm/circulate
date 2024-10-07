@@ -5,7 +5,7 @@ interface Product {
   listingId: string;
   title: string;
   description: string;
-  imageUrl: string; // URL of the image
+  imageUrl: string;
 }
 
 const ProductListing: React.FC = () => {
@@ -13,16 +13,15 @@ const ProductListing: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // State to hold the list of products
   const [products, setProducts] = useState<Product[]>([]);
 
-  // Fetch products when the component mounts
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  // Function to fetch products from the backend
   const fetchProducts = async () => {
     try {
       const response = await fetch(
@@ -47,8 +46,6 @@ const ProductListing: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Convert image file to base64
     const toBase64 = (file: File) =>
       new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         const reader = new FileReader();
@@ -59,7 +56,6 @@ const ProductListing: React.FC = () => {
 
     const imageData = image ? await toBase64(image) : null;
 
-    // Call the API Gateway endpoint
     const response = await fetch(
       "https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod/createListing",
       {
@@ -76,19 +72,22 @@ const ProductListing: React.FC = () => {
     );
 
     if (response.ok) {
-      console.log("Form submitted successfully");
-
-      // Clear form fields
       setTitle("");
       setDescription("");
       setImage(null);
-      setShowModal(false); // Close modal after successful submission
-
-      // Fetch the updated list of products
+      setShowModal(false);
       fetchProducts();
     } else {
       console.log("Form submission failed");
     }
+  };
+
+  const handleCardClick = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductModal = () => {
+    setSelectedProduct(null);
   };
 
   return (
@@ -183,25 +182,63 @@ const ProductListing: React.FC = () => {
       )}
 
       {/* Render the list of products */}
-      <div className="row mt-5">
+      <div className="row mt-5 d-flex flex-wrap">
         {products.map((product) => (
           <div className="col-md-4" key={product.listingId}>
-            <div className="card mb-4">
+            <div
+              className="card h-100 mb-4 d-flex flex-column"
+              onClick={() => handleCardClick(product)}
+              style={{ cursor: "pointer" }}
+            >
               {product.imageUrl && (
                 <img
                   src={product.imageUrl}
                   className="card-img-top"
                   alt={product.title}
+                  style={{ objectFit: "cover", height: "200px" }}
                 />
               )}
-              <div className="card-body">
+              <div className="card-body d-flex flex-column">
                 <h5 className="card-title">{product.title}</h5>
-                <p className="card-text">{product.description}</p>
+                <p className="card-text flex-grow-1">{product.description}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {selectedProduct && (
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          role="dialog"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{selectedProduct.title}</h5>
+                <button
+                  type="button"
+                  className="close"
+                  aria-label="Close"
+                  onClick={closeProductModal}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <img
+                  src={selectedProduct.imageUrl}
+                  alt={selectedProduct.title}
+                  className="img-fluid mb-3"
+                />
+                <p>{selectedProduct.description}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
