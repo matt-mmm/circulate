@@ -1,8 +1,8 @@
-import { S3, DynamoDB } from 'aws-sdk';
-const s3 = new S3();
-const dynamodb = new DynamoDB.DocumentClient();
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-export async function handler(event) {
+exports.handler = async (event) => {
   try {
     // Parse request body to get the data
     const { title, description, imageData } = JSON.parse(event.body);
@@ -57,4 +57,4 @@ export async function handler(event) {
       body: JSON.stringify({ message: 'An error occurred', error: error.message })
     };
   }
-}
+};
