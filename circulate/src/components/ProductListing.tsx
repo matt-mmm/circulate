@@ -1,21 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-interface Listing {
+interface Product {
+  id: string;
   title: string;
   description: string;
-  imageData: string | null;
+  imageData: string; // Base64 image data
 }
 
-interface ProductListingProps {
-  addListing: (listing: Listing) => void;
-}
-
-const ProductListing: React.FC<ProductListingProps> = ({ addListing }) => {
+const ProductListing: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
-  const [showModal, setShowModal] = useState<boolean>(false); // For modal visibility
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  // State to hold the list of products
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // Fetch products when the component mounts
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Function to fetch products from the backend
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(
+        "https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod/getListing"
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      } else {
+        console.error("Failed to fetch products");
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching products:", error);
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -26,9 +48,7 @@ const ProductListing: React.FC<ProductListingProps> = ({ addListing }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log(addListing); // Debug: Check if addListing is passed correctly
-
-    // Convert image file to base64 for easy upload
+    // Convert image file to base64
     const toBase64 = (file: File) =>
       new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         const reader = new FileReader();
@@ -58,18 +78,14 @@ const ProductListing: React.FC<ProductListingProps> = ({ addListing }) => {
     if (response.ok) {
       console.log("Form submitted successfully");
 
-      // Add the new listing to the displayed list
-      addListing({
-        title,
-        description,
-        imageData: imageData as string | null,
-      });
-
       // Clear form fields
       setTitle("");
       setDescription("");
       setImage(null);
       setShowModal(false); // Close modal after successful submission
+
+      // Fetch the updated list of products
+      fetchProducts();
     } else {
       console.log("Form submission failed");
     }
@@ -165,6 +181,27 @@ const ProductListing: React.FC<ProductListingProps> = ({ addListing }) => {
           </div>
         </div>
       )}
+
+      {/* Render the list of products */}
+      <div className="row mt-5">
+        {products.map((product) => (
+          <div className="col-md-4" key={product.id}>
+            <div className="card mb-4">
+              {product.imageData && (
+                <img
+                  src={product.imageData}
+                  className="card-img-top"
+                  alt={product.title}
+                />
+              )}
+              <div className="card-body">
+                <h5 className="card-title">{product.title}</h5>
+                <p className="card-text">{product.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
