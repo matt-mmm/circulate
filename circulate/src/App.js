@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Home from "./pages/Home.tsx";
 import AboutUs from "./pages/AboutUs.tsx";
-import Inbox from "./pages/Inbox.tsx";
+import Account from "./pages/Account.tsx";
 import Products from "./pages/Products.tsx";
 
 
@@ -19,7 +19,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
-            <Route path = "/Inbox" element={<Inbox />} />
+            <Route path = "/Account" element={<Account />} />
             <Route path="/Products" element={<Products />} />
             </Routes>
          </Router>
