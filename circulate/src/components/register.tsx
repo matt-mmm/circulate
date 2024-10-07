@@ -1,17 +1,32 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const MarketplacePromo = () => {
     return (
         <div style={{
             width: '100%',
-            height: '100vh', // Full height of the viewport
+            height: '100vh',
             display: 'flex',
-            justifyContent: 'flex-start', // Aligns content to the left
-            alignItems: 'center', // Vertically center
-            paddingLeft: '100px', // Adjust this to control how much to move to the left
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            paddingLeft: '100px',
             position: 'relative',
-            backgroundColor: '#F5F5F5', // Optional background color
+            backgroundImage: 'url("/lehigh-background.jpg")', // Update with the correct path
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
         }}>
+            {/* Overlay for opacity effect */}
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)', // Adjust the opacity here
+                zIndex: 0
+            }}></div>
+            
             <div style={{
                 width: 643,
                 height: 443,
@@ -19,11 +34,12 @@ const MarketplacePromo = () => {
                 background: '#8BD0F8',
                 borderRadius: 10,
                 display: 'flex',
-                flexDirection: 'column', // Stacks items vertically
-                justifyContent: 'center', // Centers vertically
-                alignItems: 'center', // Centers horizontally
-                padding: '20px', // Adds padding for internal content
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '20px',
                 boxShadow: '5px 10px 4px rgba(0, 0, 0, 0.25)',
+                zIndex: 1 // Ensures content is above the overlay
             }}>
                 {/* Text above the button */}
                 <div style={{
@@ -35,13 +51,13 @@ const MarketplacePromo = () => {
                     fontWeight: 600,
                     lineHeight: '61px',
                     letterSpacing: '1.92px',
-                    marginBottom: '20px', // Add margin between the text and button
+                    marginBottom: '20px',
                 }}>
                     Come Browse Our<br/>Free Marketplace
                 </div>
 
-                {/* Register button below the text */}
-                <div style={{
+                {/* Register button with Link */}
+                <Link to="/account?action=register" style={{
                     width: '283px',
                     height: '84px',
                     background: '#19C0FD',
@@ -55,14 +71,13 @@ const MarketplacePromo = () => {
                     fontFamily: 'Inter',
                     fontWeight: 600,
                     textAlign: 'center',
+                    textDecoration: 'none',
                 }}>
                     Register
-                </div>
+                </Link>
             </div>
         </div>
     );
 };
 
 export default MarketplacePromo;
-
-
