@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const MarketplacePromo = () => {
     return (
@@ -56,25 +55,28 @@ const MarketplacePromo = () => {
                     Come Browse Our<br/>Free Marketplace
                 </div>
 
-                {/* Register button with Link */}
-                <Link to="/account?action=register" style={{
-                    width: '283px',
-                    height: '84px',
-                    background: '#19C0FD',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                    borderRadius: '73px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    color: '#EBF8FF',
-                    fontSize: '24px',
-                    fontFamily: 'Inter',
-                    fontWeight: 600,
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                }}>
+                {/* Register button linking to Cognito Hosted UI */}
+                <a 
+                    href="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000" 
+                    style={{
+                        width: '283px',
+                        height: '84px',
+                        background: '#19C0FD',
+                        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                        borderRadius: '73px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        color: '#EBF8FF',
+                        fontSize: '24px',
+                        fontFamily: 'Inter',
+                        fontWeight: 600,
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                    }}
+                >
                     Register
-                </Link>
+                </a>
             </div>
         </div>
     );

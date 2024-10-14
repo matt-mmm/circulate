@@ -7,78 +7,56 @@ const Account = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [confirmationCode, setConfirmationCode] = useState("");
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const toggleForm = () => {
     setIsRegistering(!isRegistering);
+    setIsConfirming(false); // Reset confirmation state when toggling
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!isRegistering) {
-      // Check if user exists in the database when signing in
-      const emailExists = await checkUserExists(email);
-      if (!emailExists) {
-        alert("Email is not registered. Please register an account.");
-        return; // Stop further execution if the email is not found
-      }
-    }
-
-    // Prepare the data to send
-    const data = {
-      email,
-      password,
-      ...(isRegistering && { phoneNumber }),  // Include phone number only if registering
-    };
-
-    try {
-      const response = await fetch("https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod/postUser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Form submitted successfully:", result);
-        alert(isRegistering ? "Account created successfully!" : "Signed in successfully!");
+    if (isRegistering) {
+      if (!isConfirming) {
+        // Register the user
+        try {
+          await Auth.signUp({
+            username: email,
+            password,
+            attributes: {
+              email,
+              phone_number: phoneNumber,
+            },
+          });
+          setIsConfirming(true); // Set to confirmation step
+          alert("Verification code sent to your email.");
+        } catch (error) {
+          console.error("Error signing up:", error);
+          alert(error.message || "Error signing up. Please try again.");
+        }
       } else {
-        console.error("Form submission failed");
-        alert("Error submitting form. Please try again.");
+        // Confirm registration with verification code
+        try {
+          await Auth.confirmSignUp(email, confirmationCode);
+          alert("Account verified successfully!");
+          setIsConfirming(false);
+          setIsRegistering(false);
+        } catch (error) {
+          console.error("Error confirming sign-up:", error);
+          alert(error.message || "Error confirming sign-up. Please try again.");
+        }
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      alert("Error submitting form. Please try again.");
-    }
-  };
-
-  // Function to check if the email exists in DynamoDB
-  const checkUserExists = async (email) => {
-    try {
-      const response = await fetch(`https://zth2fyccjk.execute-api.us-east-2.amazonaws.com/prod/getUser?email=${email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        return !!data.email; // If email is returned, user exists
-      } else if (response.status === 404) {
-        // User not found
-        return false;
-      } else {
-        console.error("Failed to check user existence:", response);
-        alert("Error checking user. Please try again.");
-        return false;
+    } else {
+      // Sign in the user
+      try {
+        await Auth.signIn(email, password);
+        alert("Signed in successfully!");
+      } catch (error) {
+        console.error("Error signing in:", error);
+        alert(error.message || "Error signing in. Please try again.");
       }
-    } catch (error) {
-      console.error("An error occurred while checking user:", error);
-      alert("Error checking user. Please try again.");
-      return false;
     }
   };
 
@@ -116,15 +94,17 @@ const Account = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <input
-                type="password"
-                placeholder="Password"
-                className="input-field"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              {isRegistering && (
+              {!isConfirming && (
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="input-field"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              )}
+              {isRegistering && !isConfirming && (
                 <input
                   type="text"
                   placeholder="Phone Number"
@@ -134,13 +114,27 @@ const Account = () => {
                   required
                 />
               )}
+              {isConfirming && (
+                <input
+                  type="text"
+                  placeholder="Confirmation Code"
+                  className="input-field"
+                  value={confirmationCode}
+                  onChange={(e) => setConfirmationCode(e.target.value)}
+                  required
+                />
+              )}
             </div>
             <div className="captcha">
               <input type="checkbox" id="robot-check" required />
               <label htmlFor="robot-check">I’m not a robot</label>
             </div>
             <button type="submit" className="signup-btn">
-              {isRegistering ? "Register" : "Sign In"}
+              {isRegistering
+                ? isConfirming
+                  ? "Confirm Account"
+                  : "Register"
+                : "Sign In"}
             </button>
           </form>
           <p className="toggle-form">
