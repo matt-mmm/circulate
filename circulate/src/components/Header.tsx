@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const location = useLocation(); // Get the current path to determine the active link
 
   const handleMouseEnter = (link: string) => {
     setHoveredLink(link);
@@ -36,11 +35,11 @@ const Header = () => {
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
-        padding: "0 20px",
+        position: "relative", // Enable absolute positioning of center navigation
       }}
     >
       {/* Left side logo */}
-      <div style={{ display: "flex", alignItems: "center", width: "200px" }}>
+      <div style={{ display: "flex", alignItems: "center", width: "200px", position: "absolute", left: "20px" }}>
         <img
           src="/logo.JPEG"
           alt="Logo"
@@ -49,36 +48,39 @@ const Header = () => {
       </div>
 
       {/* Center navigation links */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexGrow: 1 }}>
-        <NavLink
-          to="/Home"
-          style={({ isActive }) => linkStyle(isActive, "Home")}
-          onMouseEnter={() => handleMouseEnter("Home")}
-          onMouseLeave={handleMouseLeave}
-        >
-          Home
-        </NavLink>
+      <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <NavLink
+            to="/Products"
+            style={({ isActive }) => linkStyle(isActive, "Products")}
+            onMouseEnter={() => handleMouseEnter("Products")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Products
+          </NavLink>
 
-        <NavLink
-          to="/Products"
-          style={({ isActive }) => linkStyle(isActive, "Products")}
-          onMouseEnter={() => handleMouseEnter("Products")}
-          onMouseLeave={handleMouseLeave}
-        >
-          Products
-        </NavLink>
+          <NavLink
+            to="/Home"
+            style={({ isActive }) => linkStyle(isActive, "Home")}
+            onMouseEnter={() => handleMouseEnter("Home")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Home
+          </NavLink>
 
-        <NavLink
-          to="/AboutUs"
-          style={({ isActive }) => linkStyle(isActive, "AboutUs")}
-          onMouseEnter={() => handleMouseEnter("AboutUs")}
-          onMouseLeave={handleMouseLeave}
-        >
-          About Us
-        </NavLink>
+          <NavLink
+            to="/AboutUs"
+            style={({ isActive }) => linkStyle(isActive, "AboutUs")}
+            onMouseEnter={() => handleMouseEnter("AboutUs")}
+            onMouseLeave={handleMouseLeave}
+          >
+            About Us
+          </NavLink>
+        </div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+      {/* Right side account link */}
+      <div style={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingRight: "20px" }}>
         <NavLink
           to="/Account"
           style={({ isActive }) => linkStyle(isActive, "Account")}
