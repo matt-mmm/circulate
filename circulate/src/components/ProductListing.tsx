@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Interface for the Product type
 interface Product {
   listingId: string;
   title: string;
@@ -38,14 +39,77 @@ const ProductListing: React.FC = () => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setImage(e.target.files[0]);
+      const file = e.target.files[0];
+      setImage(file);
+
+      // Call the function to analyze the image and auto-fill title and description
+      await analyzeImage(file);
+    }
+  };
+
+  // Function to analyze image
+  const analyzeImage = async (file: File) => {
+    const toBase64 = (file: File) =>
+      new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+
+    const imageData = await toBase64(file);
+
+    // Now send the image to an image recognition API and OpenAI API for text generation
+    if (imageData) {
+      try {
+        // Replace this with your image recognition API (e.g., AWS Rekognition, Google Vision)
+        const imageAnalysisResult = await fetch(
+          "https://your-image-recognition-api-endpoint",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ imageData }),
+          }
+        );
+
+        const imageDescription = await imageAnalysisResult.json();
+        
+        // Now use GPT API (or other text generation API) to generate a title and description
+        const gptResponse = await fetch(
+          "https://api.openai.com/v1/completions",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer YOUR_OPENAI_API_KEY`,
+            },
+            body: JSON.stringify({
+              model: "text-davinci-003", // Or other model version
+              prompt: `Generate a title and description for this image: ${imageDescription}`,
+              max_tokens: 100,
+            }),
+          }
+        );
+
+        const gptData = await gptResponse.json();
+        const generatedText = gptData.choices[0].text.split("\n");
+
+        // Set the title and description from GPT's response to auto-fill the form fields
+        setTitle(generatedText[0]);
+        setDescription(generatedText.slice(1).join(" "));
+      } catch (error) {
+        console.error("Error analyzing image and generating text:", error);
+      }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const toBase64 = (file: File) =>
       new Promise<string | ArrayBuffer | null>((resolve, reject) => {
         const reader = new FileReader();
