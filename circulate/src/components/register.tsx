@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React from 'react';
-=======
 import { Link } from "react-router-dom";
 import React from "react";
->>>>>>> keane
 
 const MarketplacePromo = () => {
     return (
@@ -32,24 +28,6 @@ const MarketplacePromo = () => {
                     top: 0,
                     left: 0,
                     width: '100%',
-<<<<<<< HEAD
-                    textAlign: 'center',
-                    color: '#EBF8FF',
-                    fontSize: '48px',
-                    fontFamily: 'Inter',
-                    fontWeight: 600,
-                    lineHeight: '61px',
-                    letterSpacing: '1.92px',
-                    marginBottom: '20px',
-                }}>
-                    Come Browse Our<br/>Free Marketplace
-                </div>
-
-                {/* Register button linking to Cognito Hosted UI */}
-                <a 
-                    href="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000" 
-                    style={{
-=======
                     height: '100%',
                     backgroundColor: 'rgba(255, 255, 255, 0.5)',
                     zIndex: 0
@@ -86,7 +64,6 @@ const MarketplacePromo = () => {
                     </div>
 
                     <Link to="/account?action=register" style={{
->>>>>>> keane
                         width: '283px',
                         height: '84px',
                         background: '#19C0FD',
@@ -101,17 +78,10 @@ const MarketplacePromo = () => {
                         fontWeight: 600,
                         textAlign: 'center',
                         textDecoration: 'none',
-<<<<<<< HEAD
-                    }}
-                >
-                    Register
-                </a>
-=======
                     }}>
                         Register
                     </Link>
                 </div>
->>>>>>> keane
             </div>
         </>
     );
