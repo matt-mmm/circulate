@@ -35,7 +35,9 @@ const Header = () => {
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
-        position: "relative", // Enable absolute positioning of center navigation
+        position: "sticky", // Make the header sticky
+        top: 0, // Stick to the top of the page
+        zIndex: 1000, // Ensure the header appears above other content
       }}
     >
       {/* Left side logo */}
@@ -82,7 +84,7 @@ const Header = () => {
       {/* Right side account link */}
       <div style={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingRight: "20px" }}>
         <NavLink
-          to="/Account"
+          to="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000"
           style={({ isActive }) => linkStyle(isActive, "Account")}
           onMouseEnter={() => handleMouseEnter("Account")}
           onMouseLeave={handleMouseLeave}
