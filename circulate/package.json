@@ -23,12 +23,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
-<<<<<<< HEAD
-    "typescript": "^5.6.3",
-=======
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
->>>>>>> 8e3c59d (user sign in complete)
     "web-vitals": "^2.1.4"
   },
   "scripts": {
