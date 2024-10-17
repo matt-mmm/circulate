@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Box } from '@mui/material';
 import Header from '../components/Header.tsx';
+import Footer from '../components/Footer.tsx';
 
 const linkedinLogo = "/LinkedInLogo2.png"; // Replace with actual LinkedIn logo image path or URL
 
@@ -39,7 +40,7 @@ const AboutUs: React.FC = () => {
   return (
     <div>
       <Header />
-      <Box sx={{ padding: 4 }}>
+      <Box sx={{ padding: 4, backgroundColor: '#D3D3D3'}}>
         <Typography variant="h5" align="center" gutterBottom paddingBottom={1}>
           Our Mission
         </Typography> 
@@ -82,6 +83,7 @@ const AboutUs: React.FC = () => {
           ))}
         </Grid>
       </Box>
+      <Footer/>
     </div>
   );
 }

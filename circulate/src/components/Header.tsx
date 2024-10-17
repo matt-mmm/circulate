@@ -17,7 +17,7 @@ const Header = () => {
     textAlign: "center",
     color: isActive ? "#FFF" : "#EBF8FF",
     fontSize: hoveredLink === link || isActive ? 26 : 22, // Maintain larger size if active or hovered
-    fontFamily: "Inter",
+    fontFamily: "'SF Pro Display', sans-serif", // Updated font family
     fontWeight: isActive ? "bold" : "500",
     lineHeight: "30px",
     letterSpacing: 1.62,
@@ -31,19 +31,20 @@ const Header = () => {
       style={{
         width: "100%",
         height: "100px",
-        background: "#8BD0F8",
+        background: "#2B303A",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
         position: "sticky", // Make the header sticky
         top: 0, // Stick to the top of the page
         zIndex: 1000, // Ensure the header appears above other content
+        fontFamily: "'SF Pro Display', sans-serif", // Apply the font globally to the header
       }}
     >
       {/* Left side logo */}
       <div style={{ display: "flex", alignItems: "center", width: "200px", position: "absolute", left: "20px" }}>
         <img
-          src="/logo.JPEG"
+          src="/logo.png"
           alt="Logo"
           style={{ height: "100px" }}
         />
