@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import debounce from "lodash.debounce";
 
 // Interface for the Product type
 interface Product {
@@ -19,10 +20,13 @@ const ProductListing: React.FC = () => {
   // State to hold the list of products
   const [products, setProducts] = useState<Product[]>([]);
 
+  const [isGenerating, setIsGenerating] = useState(false); // For tracking if the description is being generated
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // Fetch products from the API
   const fetchProducts = async () => {
     try {
       const response = await fetch(
@@ -39,6 +43,7 @@ const ProductListing: React.FC = () => {
     }
   };
 
+  // Handle image upload and analyze the image
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
@@ -49,7 +54,7 @@ const ProductListing: React.FC = () => {
     }
   };
 
-  // Function to analyze image
+  // Function to analyze the image and generate title and description
   const analyzeImage = async (file: File) => {
     const toBase64 = (file: File) =>
       new Promise<string | ArrayBuffer | null>((resolve, reject) => {
@@ -64,7 +69,7 @@ const ProductListing: React.FC = () => {
     // Now send the image to an image recognition API and OpenAI API for text generation
     if (imageData) {
       try {
-        // Replace this with your image recognition API (e.g., AWS Rekognition, Google Vision)
+        // Replace this with your image recognition API endpoint
         const imageAnalysisResult = await fetch(
           "https://your-image-recognition-api-endpoint",
           {
@@ -77,28 +82,25 @@ const ProductListing: React.FC = () => {
         );
 
         const imageDescription = await imageAnalysisResult.json();
-        
-        // Now use GPT API (or other text generation API) to generate a title and description
-        const gptResponse = await fetch(
-          "https://api.openai.com/v1/completions",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer YOUR_OPENAI_API_KEY`,
-            },
-            body: JSON.stringify({
-              model: "text-davinci-003", // Or other model version
-              prompt: `Generate a title and description for this image: ${imageDescription}`,
-              max_tokens: 100,
-            }),
-          }
-        );
+
+        // Now use OpenAI API to generate a title and description
+        const gptResponse = await fetch("https://api.openai.com/v1/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "text-davinci-003",
+            prompt: `Generate a title and description for this image: ${imageDescription}`,
+            max_tokens: 100,
+          }),
+        });
 
         const gptData = await gptResponse.json();
-        const generatedText = gptData.choices[0].text.split("\n");
+        const generatedText = gptData.choices[0].text.trim().split("\n");
 
-        // Set the title and description from GPT's response to auto-fill the form fields
+        // Set the title and description from GPT's response
         setTitle(generatedText[0]);
         setDescription(generatedText.slice(1).join(" "));
       } catch (error) {
@@ -107,6 +109,64 @@ const ProductListing: React.FC = () => {
     }
   };
 
+  // Generate description using OpenAI API
+  const generateDescription = async (title: string) => {
+    if (title.trim() === "") {
+      setDescription("");
+      return;
+    }
+  
+    setIsGenerating(true);
+  
+    try {
+      const prompt = `Write a brief and compelling product description for a listing titled "${title}".`;
+  
+      const gptResponse = await fetch("https://api.openai.com/v1/chat/completions", { // Correct endpoint for chat models
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`, // Ensure your API key is set
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",  // Using the new chat-based model
+          messages: [{ role: "user", content: prompt }],  // Correct format for chat models
+          max_tokens: 60,
+        }),
+      });
+  
+      const gptData = await gptResponse.json();
+  
+      // Check if the response contains the expected data
+      if (gptData && gptData.choices && gptData.choices.length > 0) {
+        const generatedDescription = gptData.choices[0].message.content.trim(); // Correct response structure
+        setDescription(generatedDescription);
+      } else {
+        console.error("Unexpected response format:", gptData);
+        setDescription("Unable to generate description at this time.");
+      }
+    } catch (error) {
+      console.error("Error generating description:", error);
+      setDescription("An error occurred while generating the description.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // Debounced version of generateDescription to prevent excessive API calls
+  const generateDescriptionDebounced = useCallback(
+    debounce(generateDescription, 1000), // 1 second debounce delay
+    []
+  );
+
+  // Handle description focus to generate description
+  const handleDescriptionFocus = () => {
+    // Only generate the description if it's currently empty and the title exists
+    if (!description.trim() && title.trim()) {
+      generateDescriptionDebounced(title); // Trigger description generation based on the title
+    }
+  };
+
+  // Handle form submission to create a new listing
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -136,33 +196,38 @@ const ProductListing: React.FC = () => {
     );
 
     if (response.ok) {
+      // Reset form fields and close modal
       setTitle("");
       setDescription("");
       setImage(null);
       setShowModal(false);
-      fetchProducts();
+      fetchProducts(); // Refresh the product list
     } else {
       console.log("Form submission failed");
     }
   };
 
+  // Handle card click to show product details
   const handleCardClick = (product: Product) => {
     setSelectedProduct(product);
   };
 
+  // Close the product detail modal
   const closeProductModal = () => {
     setSelectedProduct(null);
   };
 
   return (
     <div className="container mt-4">
-      <button
-        className="btn float-end"
-        onClick={() => setShowModal(true)}
-        style={{ backgroundColor: "#8BD0F8", color: "#fff" }}
-      >
-        Create a New Listing
-      </button>
+      {/* Centered button for creating a new listing */}
+      <div className="d-flex justify-content-center mb-4">
+        <button
+          className="btn btn-primary"
+          onClick={() => setShowModal(true)}
+        >
+          Create a New Listing
+        </button>
+      </div>
 
       {showModal && (
         <div
@@ -211,10 +276,17 @@ const ProductListing: React.FC = () => {
                       name="description"
                       rows={3}
                       value={description}
+                      onFocus={handleDescriptionFocus}
                       onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Enter the description of the listing"
+                      placeholder="Click here to generate a description"
                       required
+                      disabled={isGenerating}
                     ></textarea>
+                    {isGenerating && (
+                      <div className="form-text text-muted">
+                        Generating description...
+                      </div>
+                    )}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="imageUpload" className="form-label">
@@ -228,7 +300,11 @@ const ProductListing: React.FC = () => {
                       accept="image/*"
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary">
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    disabled={isGenerating}
+                  >
                     Submit
                   </button>
                   <button
