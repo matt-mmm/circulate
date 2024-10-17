@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
+import { useNavigate } from "react-router-dom"; // Use useNavigate for navigation
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "../pages/Carousel.css"; // Custom styles for 3D effects
+import "../pages/Carousel.css"; // Ensure this file exists and contains your custom styles
 
 // Interface for Product type
 interface Product {
   listingId: string;
   imageUrl: string;
-  title: string; // Assuming you have titles for each product
+  title: string;
 }
 
 const ProductCarousel: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const navigate = useNavigate(); // Used for navigation
 
   useEffect(() => {
     fetchProducts();
@@ -34,75 +36,61 @@ const ProductCarousel: React.FC = () => {
     }
   };
 
+  const handleProductClick = (listingId: string) => {
+    // Navigate to the listings page with the selected product
+    navigate(`/Products?selected=${listingId}`);
+  };
+
   const settings = {
     infinite: true,
     speed: 5000,
-    slidesToShow: 3,
+    slidesToShow: 5, // Increase the number of slides to show more items
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 0,
     cssEase: "linear",
     pauseOnHover: false,
-    centerMode: true,
-    centerPadding: "0",
-    className: "carousel-3d", // Custom class for 3D carousel styling
+    centerMode: false, // Disable center mode for full-width
+    variableWidth: false, // Ensure slides are equal width
+    className: "carousel", // Custom class for styling
   };
 
   return (
-    <div className="product-carousel-container" style={{ padding: "40px 0" }}>
-      {/* Title above the carousel */}
-      <h2 style={{
-          textAlign: "center",
-          color: "#333",
-          fontFamily: "Inter, sans-serif",
-          fontSize: "36px",
-          fontWeight: 600,
-          marginBottom: "20px",
-      }}>
-        Check out our Listings!
-      </h2>
-
-      {/* Product Carousel */}
-      <div className="product-carousel" style={{ maxWidth: "1200px", margin: "0 auto" }}>
+    <div
+      className="product-carousel-container"
+      style={{ padding: "40px 0", backgroundColor: "#565857" }}
+    >
+      <div className="product-carousel" style={{ width: "100%", margin: "0 auto" }}>
         <Slider {...settings}>
           {products.map((product) => (
-            <div className="product-slide" key={product.listingId}>
+            <div className="product-slide" key={product.listingId} >
               <div
                 className="product-card"
+                onClick={() => handleProductClick(product.listingId)} // Handle click to navigate
                 style={{
                   padding: "15px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "350px", // Increased height to accommodate title
                   backgroundColor: "#FFF",
                   borderRadius: "10px",
-                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                  margin: "0 15px", // Space between slides
-                  textAlign: "center", // Center the title text
+                  textAlign: "center",
+                  cursor: "pointer",
+                  position: "relative",
+                  background: "transparent"
                 }}
               >
+                <div style={{backgroundColor: '#565857'}}>
                 <img
                   src={product.imageUrl}
-                  alt={product.title} // Using the product title as the alt text
+                  alt={product.title}
                   style={{
-                    height: "80%", // Adjusted to leave space for the title below
-                    maxWidth: "100%", // Prevent stretching beyond card width
-                    objectFit: "cover", // Maintain aspect ratio
+                    width: "100%",
+                    height: "250px", // Fixed height for uniformity
+                    objectFit: "cover",
                     borderRadius: "5px",
                   }}
                 />
+                </div>
                 {/* Title Below Image */}
-                <h4 style={{
-                  marginTop: "10px",
-                  fontSize: "18px",
-                  color: "#333",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 500,
-                }}>
-                  {product.title}
-                </h4>
+                
               </div>
             </div>
           ))}

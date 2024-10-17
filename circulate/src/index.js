@@ -7,7 +7,6 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'; // Import The
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
 // Create your MUI theme (you can customize this theme as needed)
 const theme = createTheme();
 

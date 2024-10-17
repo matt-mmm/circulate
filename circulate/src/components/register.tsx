@@ -43,13 +43,13 @@ const MarketplacePromo = () => {
                 boxShadow: '0 15px 25px rgba(0, 0, 0, 0.1)',
                 zIndex: 1, // Ensure content is above the overlay
                 marginBottom: '200px', // Space below the box
-                marginTop: '210px', // Space above the box
+                marginTop: '130px', // Space above the box
             }}>
                 {/* Text above the button */}
                 <div style={{
                     width: '100%',
                     textAlign: 'center',
-                    color: '#EBF8FF',
+                    color: 'white',
                     fontSize: '42px', // Large font size
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 600,
@@ -64,7 +64,7 @@ const MarketplacePromo = () => {
                 <div style={{
                     width: '100%',
                     textAlign: 'center',
-                    color: '#FFFFFF',
+                    color: 'white',
                     fontSize: '18px',
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 400,
@@ -86,17 +86,17 @@ const MarketplacePromo = () => {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        color: '#EBF8FF',
+                        color: 'white',
                         fontSize: '24px',
                         fontFamily: 'Inter, sans-serif',
                         fontWeight: 600,
                         textAlign: 'center',
                         textDecoration: 'none',
                         boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15)',
-                        transition: 'background-color 0.3s ease',
+                        transition: 'transform 0.3s ease', // Smooth hover transition for scaling
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = '#565857'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = '#565857'}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'} // Slightly enlarge on hover
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} // Reset on hover out
                 >
                     Sign Up Now!
                 </a>
@@ -105,7 +105,7 @@ const MarketplacePromo = () => {
             {/* Carousel section with grey background */}
             <div style={{
                 width: '100%',
-                backgroundColor: '#D3D3D3', // Light grey background for the carousel section
+                backgroundColor: '#565857', // Light grey background for the carousel section
                 padding: '0px 0',
                 display: 'flex',
                 justifyContent: 'center',

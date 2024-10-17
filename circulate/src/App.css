@@ -1,6 +1,5 @@
 /* Button.css */
-.create-listing-btn {
-    background-color: #8BD0F8; 
+.create-listing-btn { 
     color: white; /* White text */
     padding: 10px 20px; /* Padding around the button */
     border: none; /* Remove border */
@@ -11,7 +10,7 @@
   }
   
   .create-listing-btn:hover {
-    background-color: #6ac2f6; 
+  
   }
   
   .container {
