@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@aws-amplify/auth": "^6.5.2",
+    "@aws-amplify/core": "^6.4.5",
     "@aws-amplify/ui-react": "^6.5.4",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -11,16 +12,23 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "aws-amplify": "^6.6.5",
+    "amazon-cognito-identity-js": "^6.3.14",
+    "aws-amplify": "^5.3.25",
     "aws-sdk": "^2.1691.0",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-scripts": "5.0.1",
+<<<<<<< HEAD
     "typescript": "^5.6.3",
+=======
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
+>>>>>>> 8e3c59d (user sign in complete)
     "web-vitals": "^2.1.4"
   },
   "scripts": {

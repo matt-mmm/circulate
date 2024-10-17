@@ -1,8 +1,13 @@
+// src/components/Header.tsx
+
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+
+  // Determine if the user is authenticated
+  const isAuthenticated = !!localStorage.getItem('id_token');
 
   const handleMouseEnter = (link: string) => {
     setHoveredLink(link);
@@ -16,15 +21,31 @@ const Header = () => {
     display: "inline",
     textAlign: "center",
     color: isActive ? "#FFF" : "#EBF8FF",
-    fontSize: hoveredLink === link || isActive ? 26 : 22, // Maintain larger size if active or hovered
+    fontSize: hoveredLink === link || isActive ? 26 : 22,
     fontFamily: "Inter",
     fontWeight: isActive ? "bold" : "500",
     lineHeight: "30px",
     letterSpacing: 1.62,
     textDecoration: "none",
     margin: "0 20px",
-    transition: "font-size 0.3s ease", // Smooth transition for resizing
+    transition: "font-size 0.3s ease",
+    cursor: "pointer",
   });
+
+  // Sign-out function
+  const handleSignOut = () => {
+    // Clear tokens from localStorage
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('access_token');
+
+    // Redirect to Cognito's logout URL
+    const clientId = '6sttjboiag1ha957tqt9lha4q8'; // Replace with your actual Client ID
+    const redirectUri = encodeURIComponent('http://localhost:3000/');
+    const cognitoDomain = 'https://circulatesignup.auth.us-east-2.amazoncognito.com';
+    const logoutUrl = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${redirectUri}`;
+
+    window.location.href = logoutUrl;
+  };
 
   return (
     <div
@@ -35,9 +56,9 @@ const Header = () => {
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
-        position: "sticky", // Make the header sticky
-        top: 0, // Stick to the top of the page
-        zIndex: 1000, // Ensure the header appears above other content
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
       }}
     >
       {/* Left side logo */}
@@ -81,16 +102,29 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Right side account link */}
+      {/* Right side account link or sign-out button */}
       <div style={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingRight: "20px" }}>
-        <NavLink
-          to="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000"
-          style={({ isActive }) => linkStyle(isActive, "Account")}
-          onMouseEnter={() => handleMouseEnter("Account")}
-          onMouseLeave={handleMouseLeave}
-        >
-          Create an Account
-        </NavLink>
+        {isAuthenticated ? (
+          // Sign-out button
+          <span
+            onClick={handleSignOut}
+            style={linkStyle(false, "SignOut")}
+            onMouseEnter={() => handleMouseEnter("SignOut")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Sign Out
+          </span>
+        ) : (
+          // Create an Account link
+          <a
+            href="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback"
+            style={linkStyle(false, "Account")}
+            onMouseEnter={() => handleMouseEnter("Account")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Sign in
+          </a>
+        )}
       </div>
     </div>
   );

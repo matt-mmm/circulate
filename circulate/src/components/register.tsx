@@ -65,7 +65,7 @@ const MarketplacePromo = () => {
 
                 {/* Register button linking to Cognito Hosted UI */}
                 <a 
-                    href="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000" 
+                    href= "https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback" 
                     style={{
                         width: '283px',
                         height: '84px',
