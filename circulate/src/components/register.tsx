@@ -8,19 +8,15 @@ const MarketplacePromo = () => {
             minHeight: '100vh',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
             alignItems: 'center',
             position: 'relative',
-            backgroundImage: 'url("/lehigh-background.jpg")', // Update with the correct path
+            backgroundImage: 'url(/Lehigh-background.jpg)', // Ensure correct image path
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             padding: '0',
         }}>
-            {/* Product carousel goes below the register box */}
-            <div style={{ width: '100%', zIndex: 1, paddingTop: 30}}>
-                <ProductCarousel />
-            </div>
+            
             {/* Overlay for opacity effect */}
             <div style={{
                 position: 'absolute',
@@ -28,68 +24,105 @@ const MarketplacePromo = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'rgba(255, 255, 255, 0.5)', // Adjust the opacity here
+                backgroundColor: 'rgba(255, 255, 255, 0.4)', // Lighter opacity for better readability
                 zIndex: 0
             }}></div>
             
-            {/* Centered register box */}
+            {/* Centered and enlarged register box with additional content */}
             <div style={{
-                width: 643,
-                height: 343,
+                width: '90%',
+                maxWidth: '850px', // Slightly larger box
                 position: 'relative',
-                background: '#8BD0F8',
-                borderRadius: 10,
+                background: '#2B303A',
+                borderRadius: '20px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                padding: '20px',
-                boxShadow: '5px 10px 4px rgba(0, 0, 0, 0.25)',
-                zIndex: 1, // Ensures content is above the overlay
-                marginBottom: '10px', // Add space below the register box
+                padding: '60px', // Increase padding for larger look
+                boxShadow: '0 15px 25px rgba(0, 0, 0, 0.1)',
+                zIndex: 1, // Ensure content is above the overlay
+                marginBottom: '200px', // Space below the box
+                marginTop: '130px', // Space above the box
             }}>
                 {/* Text above the button */}
                 <div style={{
                     width: '100%',
                     textAlign: 'center',
-                    color: '#EBF8FF',
-                    fontSize: '48px',
-                    fontFamily: 'Inter',
+                    color: 'white',
+                    fontSize: '42px', // Large font size
+                    fontFamily: 'Inter, sans-serif',
                     fontWeight: 600,
-                    lineHeight: '61px',
-                    letterSpacing: '1.92px',
-                    marginBottom: '20px',
+                    lineHeight: '52px',
+                    letterSpacing: '1.5px',
+                    marginBottom: '20px', // Space below the title
                 }}>
-                    Come Browse Our<br/>Free Marketplace
+                    From Lehigh students<br />for you!
+                </div>
+
+                {/* Additional description below the title */}
+                <div style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    color: 'white',
+                    fontSize: '18px',
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 400,
+                    lineHeight: '28px',
+                    marginBottom: '40px', // Add space below the description
+                }}>
+                    Discover a wide variety of goods from fellow students. <br />
+                    Sign up now to browse!
                 </div>
 
                 {/* Register button linking to Cognito Hosted UI */}
                 <a 
                     href= "https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback" 
                     style={{
-                        width: '283px',
-                        height: '84px',
-                        background: '#19C0FD',
-                        boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                        borderRadius: '73px',
+                        width: '300px', // Make the button larger
+                        height: '80px',
+                        background: '#565857',
+                        borderRadius: '50px',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        color: '#EBF8FF',
+                        color: 'white',
                         fontSize: '24px',
-                        fontFamily: 'Inter',
+                        fontFamily: 'Inter, sans-serif',
                         fontWeight: 600,
                         textAlign: 'center',
                         textDecoration: 'none',
+                        boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15)',
+                        transition: 'transform 0.3s ease', // Smooth hover transition for scaling
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'} // Slightly enlarge on hover
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'} // Reset on hover out
                 >
-                    Register
+                    Sign Up Now!
                 </a>
             </div>
 
-            {/* Product carousel goes below the register box */}
-            <div style={{ width: '99%', zIndex: 1 }}>
-                <ProductCarousel />
+            {/* Carousel section with grey background */}
+            <div style={{
+                width: '100%',
+                backgroundColor: '#565857', // Light grey background for the carousel section
+                padding: '0px 0',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1,
+            }}>
+                <div style={{ width: '100%' }}>
+                    <h2 style={{
+                        textAlign: 'center',
+                        marginBottom: '0px',
+                        fontFamily: 'Inter, sans-serif',
+                        fontWeight: 600,
+                        color: '#333',
+                    }}>
+                    </h2>
+                    <ProductCarousel />
+                </div>
             </div>
         </div>
     );

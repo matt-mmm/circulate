@@ -20,9 +20,9 @@ const Header = () => {
   const linkStyle = (isActive: boolean, link: string) => ({
     display: "inline",
     textAlign: "center",
-    color: isActive ? "#FFF" : "#EBF8FF",
-    fontSize: hoveredLink === link || isActive ? 26 : 22,
-    fontFamily: "Inter",
+    color: isActive ? "white" : "white",
+    fontSize: hoveredLink === link || isActive ? 26 : 22, // Maintain larger size if active or hovered
+    fontFamily: "'SF Pro Display', sans-serif", // Updated font family
     fontWeight: isActive ? "bold" : "500",
     lineHeight: "30px",
     letterSpacing: 1.62,
@@ -52,54 +52,60 @@ const Header = () => {
       style={{
         width: "100%",
         height: "100px",
-        background: "#8BD0F8",
+        background: "#2B303A",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         display: "flex",
         alignItems: "center",
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
+        position: "sticky", // Make the header sticky
+        top: 0, // Stick to the top of the page
+        zIndex: 1000, // Ensure the header appears above other content
+        fontFamily: "'SF Pro Display', sans-serif", // Apply the font globally to the header
       }}
     >
       {/* Left side logo */}
-      <div style={{ display: "flex", alignItems: "center", width: "200px", position: "absolute", left: "20px" }}>
-        <img
-          src="/logo.JPEG"
-          alt="Logo"
-          style={{ height: "100px" }}
-        />
+      <div style={{ display: "flex", alignItems: "center", width: "200px", position: "absolute", left: "" }}>
+        <img src="/logo.png" alt="Logo" style={{ height: "100px" }} />
       </div>
-
+  
       {/* Center navigation links */}
-      <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <NavLink
-            to="/Products"
-            style={({ isActive }) => linkStyle(isActive, "Products")}
-            onMouseEnter={() => handleMouseEnter("Products")}
-            onMouseLeave={handleMouseLeave}
-          >
-            Products
-          </NavLink>
-
-          <NavLink
-            to="/Home"
-            style={({ isActive }) => linkStyle(isActive, "Home")}
-            onMouseEnter={() => handleMouseEnter("Home")}
-            onMouseLeave={handleMouseLeave}
-          >
-            Home
-          </NavLink>
-
-          <NavLink
-            to="/AboutUs"
-            style={({ isActive }) => linkStyle(isActive, "AboutUs")}
-            onMouseEnter={() => handleMouseEnter("AboutUs")}
-            onMouseLeave={handleMouseLeave}
-          >
-            About Us
-          </NavLink>
-        </div>
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          justifyContent: "space-between", // Space the links evenly
+          width: "700px", // Set a fixed width for consistent spacing
+          color: 'white'
+        }}
+      >
+        <NavLink
+          to="/Products"
+          style={({ isActive }) => linkStyle(isActive, "Products")}
+          onMouseEnter={() => handleMouseEnter("Products")}
+          onMouseLeave={handleMouseLeave}
+        >
+          Products
+        </NavLink>
+  
+        <NavLink
+          to="/Home"
+          style={({ isActive }) => linkStyle(isActive, "Home")}
+          onMouseEnter={() => handleMouseEnter("Home")}
+          onMouseLeave={handleMouseLeave}
+        >
+          Home
+        </NavLink>
+  
+        <NavLink
+          to="/AboutUs"
+          style={({ isActive }) => linkStyle(isActive, "AboutUs")}
+          onMouseEnter={() => handleMouseEnter("AboutUs")}
+          onMouseLeave={handleMouseLeave}
+          
+        >
+          About Us
+        </NavLink>
       </div>
 
       {/* Right side account link or sign-out button */}
