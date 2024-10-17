@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import debounce from "lodash.debounce";
 import Footer from "./Footer.tsx";
@@ -8,11 +8,12 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField,
   Switch,
   FormControlLabel,
   Tooltip,
   IconButton,
+  TextField,
+  CircularProgress,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info"; // Import MUI info icon
 import CloseIcon from "@mui/icons-material/Close"; // Import MUI close icon
@@ -28,15 +29,13 @@ interface Product {
 }
 
 const ProductListing: React.FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [isListing, setIsListing] = useState<boolean>(true); // Toggle between Listing and Requesting
+   // Toggle between Listing and Requesting
   const [isAnonymous, setIsAnonymous] = useState<boolean>(false); // Toggle between anonymous or not
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]); // State to hold the list of products
-  const [isGenerating, setIsGenerating] = useState(false); // For tracking if the description is being generated
 
   useEffect(() => {
     fetchProducts();
@@ -53,7 +52,7 @@ const ProductListing: React.FC = () => {
         const updatedProducts = data.map((product: Product, index: number) => ({
           ...product,
           isRequested: index % 2 === 0, // Simulate some products as requested
-          isAnonymous: index % 2 !== 0, // Simulate some products as anonymous
+          isAnonymous: index % 3 !== 0, // Simulate some products as anonymous
         }));
         setProducts(updatedProducts);
       } else {
@@ -65,6 +64,13 @@ const ProductListing: React.FC = () => {
   };
 
   // Function to generate description using OpenAI API
+  const [title, setTitle] = useState<string>("");
+  const [isListing, setIsListing] = useState<boolean>(true);
+
+  const [description, setDescription] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState(false); // For tracking if the description is being generated
+
+  // Function to generate description using OpenAI API
   const generateDescription = async (title: string) => {
     if (title.trim() === "") {
       setDescription("");
@@ -74,13 +80,19 @@ const ProductListing: React.FC = () => {
     setIsGenerating(true);
 
     try {
-      const prompt = `Write a very brief casual description of the given listing title with the intent of being given away but don't add any unnecessary commentary: "${title}".`;
+      // Adjust the prompt based on isListing
+      let prompt = "";
+      if (isListing) {
+        prompt = `Write a very brief casual description of the given listing title with the intent of being given away but don't add any unnecessary commentary: "${title}".`;
+      } else {
+        prompt = `Write a very brief casual description of the request listing title with the intent of getting the item but don't add any unnecessary commentary: "${title}".`;
+      }
 
       const gptResponse = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`, // Ensure your API key is set in environment variables
+          Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
@@ -91,7 +103,6 @@ const ProductListing: React.FC = () => {
 
       const gptData = await gptResponse.json();
 
-      // Check if the response contains the expected data
       if (gptData && gptData.choices && gptData.choices.length > 0) {
         const generatedDescription = gptData.choices[0].message.content.trim();
         setDescription(generatedDescription);
@@ -107,20 +118,30 @@ const ProductListing: React.FC = () => {
     }
   };
 
-  // Debounced version of generateDescription to prevent excessive API calls
-  const generateDescriptionDebounced = useCallback(
-    debounce((title: string) => generateDescription(title), 1000), // 1-second debounce delay
+  // Debounced function for title changes
+  const debouncedGenerateDescription = useMemo(
+    () =>
+      debounce((title: string) => {
+        generateDescription(title);
+      }, 1000),
     []
   );
 
-  // Use effect to trigger description generation when title changes
+  // Effect for title changes
   useEffect(() => {
     if (title.trim()) {
-      generateDescriptionDebounced(title);
+      debouncedGenerateDescription(title);
     } else {
       setDescription("");
     }
-  }, [title, generateDescriptionDebounced]);
+  }, [title, debouncedGenerateDescription]);
+
+  // Effect for isListing changes
+  useEffect(() => {
+    if (title.trim()) {
+      generateDescription(title);
+    }
+  }, [isListing]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -161,6 +182,7 @@ const ProductListing: React.FC = () => {
     if (response.ok) {
       // Reset form fields and close modal
       setTitle("");
+      setIsListing(true);
       setDescription("");
       setImage(null);
       setShowModal(false);
@@ -179,11 +201,11 @@ const ProductListing: React.FC = () => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", backgroundColor: '#D3D3D3' }}>
       {/* Centered buttons for creating a new listing and requesting an item */}
       <div
         className="d-flex justify-content-center mb-4"
-        style={{ paddingTop: "50px", width: "100%" }}
+        style={{ paddingTop: "50px", width: "100%", backgroundColor: '#D3D3D3' }}
       >
         <Button
           variant="contained"
@@ -232,7 +254,7 @@ const ProductListing: React.FC = () => {
         </DialogTitle>
         <DialogContent style={{ padding: "30px" }}>
           <FormControlLabel
-            control={<Switch checked={!isListing} onChange={() => setIsListing(!isListing)} />}
+            control={<Switch checked={!isListing} onChange={(() => setIsListing(!isListing))} />}
             label={isListing ? "Listing Mode" : "Request Mode"}
             style={{ marginBottom: "20px" }}
           />
@@ -262,30 +284,31 @@ const ProductListing: React.FC = () => {
           </div>
 
           <TextField
-            fullWidth
-            label="Title"
-            variant="outlined"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={`Enter the title of the ${isListing ? "listing" : "request"}`}
-            margin="normal"
-            required
-          />
-          <TextField
-            fullWidth
-            multiline
-            rows={3}
-            label="Description"
-            variant="outlined"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder={`Description will be generated based on the ${
-              isListing ? "listing" : "request"
-            } title`}
-            margin="normal"
-            required
-            disabled={isGenerating}
-          />
+          fullWidth
+          label="Title"
+          variant="outlined"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder={`Enter the title of the ${isListing ? "listing" : "request"}`}
+          margin="normal"
+          required
+        />
+        <TextField
+          fullWidth
+          multiline
+          rows={3}
+          label="Description"
+          variant="outlined"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description will be generated based on the title"
+          margin="normal"
+          required
+          disabled={isGenerating}
+          InputProps={{
+            endAdornment: isGenerating ? <CircularProgress size={20} /> : null,
+          }}
+        />
 
           {isListing && (
             <TextField
@@ -296,12 +319,11 @@ const ProductListing: React.FC = () => {
               }}
               onChange={handleImageChange}
               margin="normal"
-              label="Upload an Image"
             />
           )}
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" color="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="outlined" color="white" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
           <Button
@@ -318,7 +340,7 @@ const ProductListing: React.FC = () => {
       {/* Render the list of products */}
       <div
         className="row justify-content-around mt-5 d-flex flex-wrap"
-        style={{ width: "100%", justifyContent: "space-around", paddingLeft: "17px" }}
+        style={{ width: "100%", justifyContent: "space-around", paddingLeft: "17px", backgroundColor: '#D3D3D3' }}
       >
         {products.map((product) => (
           <div className="col-md-3 mb-4" key={product.listingId}>
@@ -363,53 +385,152 @@ const ProductListing: React.FC = () => {
 
       {/* Selected Product Modal */}
       {selectedProduct && (
-        <Dialog
-          open={!!selectedProduct}
-          onClose={closeProductModal}
-          fullWidth
-          maxWidth="md"
-          PaperProps={{ style: { display: "flex", flexDirection: "row", position: "relative" } }}
+        <div
+          className="modal fade show d-block"
+          tabIndex={-1}
+          role="dialog"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
-          <IconButton
+          <div
+            className="modal-dialog"
+            role="document"
             style={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              color: "#fff",
-              backgroundColor: "#565857",
+              maxWidth: "800px",
+              width: "100%",
+              minWidth: "600px",
+              margin: "auto",
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              minHeight: "400px",
             }}
-            onClick={closeProductModal}
           >
-            <CloseIcon />
-          </IconButton>
-          <div style={{ width: "50%", overflow: "hidden" }}>
-            <img
-              src={selectedProduct.imageUrl}
-              alt={selectedProduct.title}
+            <div
+              className="modal-content"
               style={{
-                objectFit: "cover",
-                height: "100%",
-                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                minHeight: "400px",
               }}
-            />
-          </div>
-
-          <DialogContent style={{ padding: "20px", width: "50%" }}>
-            <h2>{selectedProduct.title}</h2>
-            {/* Show creator's name only if the post is not anonymous */}
-            {!selectedProduct.isAnonymous && (
-              <h6 style={{ color: "#888" }}>Owner: cck226@lehigh.edu</h6>
-            )}
-            <p>{selectedProduct.description}</p>
-            <Button
-              variant="contained"
-              style={{ backgroundColor: "#006600", color: "white" }}
-              onClick={() => alert("The owner has been notified of your interest via Lehigh email!")}
             >
-              {selectedProduct.isRequested ? "I Can Help!" : "I'm Interested"}
-            </Button>
-          </DialogContent>
-        </Dialog>
+              <div style={{ width: "50%", overflow: "hidden" }}>
+                <img
+                  src={selectedProduct.imageUrl}
+                  alt={selectedProduct.title}
+                  style={{
+                    objectFit: "cover",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                />
+              </div>
+
+              <div
+                className="modal-body"
+                style={{
+                  padding: "20px",
+                  width: "50%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  position: "relative",
+                }}
+              >
+                {/* Display Requested Tag in modal */}
+                {selectedProduct.isRequested && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "16px",
+                      right: "40px",
+                      backgroundColor: "#2B303A",
+                      color: "#fff",
+                      padding: "5px 10px",
+                      borderRadius: "20px",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Requested
+                  </div>
+                )}
+
+                <div>
+                  <h2 style={{ marginBottom: "10px", whiteSpace: "nowrap" }}>
+                    {selectedProduct.title}
+                  </h2>
+                  {selectedProduct.isAnonymous && (
+                    <h6
+                      style={{
+                        color: "#888",
+                        marginBottom: "20px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Owner: cck226@lehigh.edu
+                    </h6>
+                  )}  
+                  <p style={{ whiteSpace: "nowrap" }}>
+                    {selectedProduct.description}
+                  </p>
+                </div>
+
+                {/* I Can Help Button */}
+                {selectedProduct.isRequested && (
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{
+                      alignSelf: "flex-start",
+                      marginTop: "10px",
+                      backgroundColor: "#2B303A", // Same color as other buttons
+                      color: "white",
+                    }}
+                    onClick={() =>
+                      alert("The owner of the post has been notified!")
+                    }
+                  >
+                    I can help!
+                  </button>
+                )} 
+                {!selectedProduct.isRequested && (
+                  <button
+                    type="button"
+                    className="btn"
+                    style={{
+                      alignSelf: "flex-start",
+                      marginTop: "10px",
+                      backgroundColor: "#2B303A", // Same color as other buttons
+                      color: "white",
+                    }}
+                    onClick={() =>
+                      alert("The owner of the post has been notified!")
+                    }
+                  >
+                    I am interested!
+                  </button>
+                )} 
+                <button
+                  type="button"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontSize: "24px",
+                    cursor: "pointer",
+                  }}
+                  aria-label="Close"
+                  onClick={closeProductModal}
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
       <Footer />
     </div>
