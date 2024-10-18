@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick-theme.css";
 // Create your MUI theme (you can customize this theme as needed)
 const theme = createTheme();
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -20,5 +21,4 @@ root.render(
   </React.StrictMode>
 );
 
-// Optional: Measuring performance in your app
 reportWebVitals();

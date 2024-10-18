@@ -1,8 +1,13 @@
+// src/components/Header.tsx
+
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+
+  // Determine if the user is authenticated
+  const isAuthenticated = !!localStorage.getItem('id_token');
 
   const handleMouseEnter = (link: string) => {
     setHoveredLink(link);
@@ -23,8 +28,24 @@ const Header = () => {
     letterSpacing: 1.62,
     textDecoration: "none",
     margin: "0 20px",
-    transition: "font-size 0.3s ease", // Smooth transition for resizing
+    transition: "font-size 0.3s ease",
+    cursor: "pointer",
   });
+
+  // Sign-out function
+  const handleSignOut = () => {
+    // Clear tokens from localStorage
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('access_token');
+
+    // Redirect to Cognito's logout URL
+    const clientId = '6sttjboiag1ha957tqt9lha4q8'; // Replace with your actual Client ID
+    const redirectUri = encodeURIComponent('http://localhost:3000/');
+    const cognitoDomain = 'https://circulatesignup.auth.us-east-2.amazoncognito.com';
+    const logoutUrl = `${cognitoDomain}/logout?client_id=${clientId}&logout_uri=${redirectUri}`;
+
+    window.location.href = logoutUrl;
+  };
 
   return (
     <div
@@ -86,19 +107,33 @@ const Header = () => {
           About Us
         </NavLink>
       </div>
-  
-      {/* Right side account link */}
-      <div style={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingRight: "20px", color: "white" }}>
-        <NavLink
-          to="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000"
-          style={({ isActive }) => linkStyle(isActive, "Account")}
-          onMouseEnter={() => handleMouseEnter("Account")}
-          onMouseLeave={handleMouseLeave}
-        >
-          Sign in
-        </NavLink>
+
+      {/* Right side account link or sign-out button */}
+      <div style={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingRight: "20px" }}>
+        {isAuthenticated ? (
+          // Sign-out button
+          <span
+            onClick={handleSignOut}
+            style={linkStyle(false, "SignOut")}
+            onMouseEnter={() => handleMouseEnter("SignOut")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Sign Out
+          </span>
+        ) : (
+          // Create an Account link
+          <a
+            href="https://circulatesignup.auth.us-east-2.amazoncognito.com/login?client_id=6sttjboiag1ha957tqt9lha4q8&response_type=code&scope=email+openid+phone&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback"
+            style={linkStyle(false, "Account")}
+            onMouseEnter={() => handleMouseEnter("Account")}
+            onMouseLeave={handleMouseLeave}
+          >
+            Sign in
+          </a>
+        )}
       </div>
     </div>
-);
-}
+  );
+};
+
 export default Header;

@@ -1,0 +1,137 @@
+.logo-customizable {
+  max-width: 50%;
+  max-height: 30%;
+  margin: 0 auto;
+  display: block;
+}
+
+.banner-customizable {
+  padding: 20px 0;
+  background-color: #e0e0e0; /* Softer gray for a welcoming feel */
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333333; /* Darker text for readability */
+}
+
+.label-customizable {
+  font-weight: 400;
+  color: #333333; /* Darker text for better contrast */
+  display: block;
+  margin-bottom: 5px;
+}
+
+.textDescription-customizable {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  font-size: 16px;
+  color: #555555; /* Medium gray for easy readability */
+}
+
+.idpDescription-customizable {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: block;
+  font-size: 16px;
+  color: #555555;
+}
+
+.legalText-customizable {
+  color: #777777; /* Slightly darker gray */
+  font-size: 12px; /* Increased size for readability */
+  text-align: center;
+  margin-top: 15px;
+}
+
+.submitButton-customizable {
+  font-size: 16px; /* Slightly larger for better readability */
+  font-weight: bold;
+  margin: 20px 0 10px 0;
+  height: 45px; /* Increased height for touch accessibility */
+  width: 100%;
+  color: #ffffff;
+  background-color: #1a73e8; /* More vibrant blue */
+  border: none;
+  border-radius: 5px; /* Rounded corners for modern look */
+  cursor: pointer;
+}
+
+.submitButton-customizable:hover {
+  background-color: #155bb5; /* Darker blue on hover */
+}
+
+.errorMessage-customizable {
+  padding: 10px;
+  font-size: 14px;
+  width: 100%;
+  background-color: #f8d7da; /* Softer red for background */
+  border: 1px solid #f5c6cb;
+  color: #721c24; /* Darker red for readability */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 15px;
+}
+
+.inputField-customizable {
+  width: 100%;
+  height: 40px; /* Increased height for comfort */
+  color: #333333; /* Darker text inside inputs */
+  background-color: #ffffff;
+  border: 1px solid #ced4da; /* Softer border color */
+  border-radius: 5px; /* Rounded edges */
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+.inputField-customizable:focus {
+  border-color: #80bdff; /* Blue border on focus */
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.idpButton-customizable {
+  height: 45px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #ffffff;
+  background-color: #28a745; /* Green for positive action */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.idpButton-customizable:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.socialButton-customizable {
+  border-radius: 5px; /* Rounded corners */
+  height: 45px;
+  margin-bottom: 15px;
+  padding: 1px;
+  text-align: center;
+  width: 100%;
+  color: #ffffff;
+  background-color: #6666; /* Facebook blue */
+  cursor: pointer;
+}
+
+.redirect-customizable {
+  text-align: center;
+  color: #007bff; /* Blue to match links */
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.passwordCheck-notValid-customizable {
+  color: #dc3545; /* Clear red for invalid */
+}
+
+.passwordCheck-valid-customizable {
+  color: #28a745; /* Clear green for valid */
+}
+
+.background-customizable {
+  background-color: #333; /* Dark gray instead of black to reduce eye strain */
+}
